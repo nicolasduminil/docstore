@@ -12,6 +12,7 @@
     <module>dockstore-domain</module>
     <module>docstore-repository</module>
     <module>docstore-service</module>
+    <module>docstore-api</module>
   </modules>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>

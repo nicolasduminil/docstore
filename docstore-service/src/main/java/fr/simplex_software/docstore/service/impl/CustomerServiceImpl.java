@@ -15,6 +15,12 @@ public class CustomerServiceImpl implements CustomerService
   CustomerRepository customerRepository;
 
   @Override
+  public List<Customer> findAllCustomers()
+  {
+    return customerRepository.findAll().list();
+  }
+
+  @Override
   public Optional<Customer> findCustomerById(BigInteger id)
   {
     return customerRepository.findByIdOptional(id);

@@ -1,9 +1,13 @@
 package fr.simplex_software.docstore.domain;
 
+import org.bson.codecs.pojo.annotations.*;
+
 import java.math.*;
 
 public class OrderItem
 {
+  @BsonId
+  private BigInteger id;
   private BigInteger productId;
   private BigDecimal price;
   private int amount;
@@ -13,6 +17,22 @@ public class OrderItem
     this.productId = productId;
     this.price = price;
     this.amount = amount;
+  }
+
+  public OrderItem(BigInteger id, OrderItem orderItem)
+  {
+    this (orderItem.productId, orderItem.price, orderItem.amount);
+    this.id = orderItem.id;
+  }
+
+  public BigInteger getId()
+  {
+    return id;
+  }
+
+  public void setId(BigInteger id)
+  {
+    this.id = id;
   }
 
   public BigInteger getProductId()

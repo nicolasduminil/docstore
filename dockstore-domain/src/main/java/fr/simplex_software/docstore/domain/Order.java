@@ -23,6 +23,11 @@ public class Order
     this.billingAddress = billingAddress;
   }
 
+  public Order (BigInteger id, Order order)
+  {
+    this (id, order.shippingAddress, order.billingAddress);
+  }
+
   public BigInteger getId()
   {
     return id;

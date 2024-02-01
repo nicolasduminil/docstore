@@ -22,6 +22,13 @@ public class Product
     this.price = price;
   }
 
+  public Product (BigInteger id, Product product)
+  {
+    this (product.name, product.description, product.price);
+    this.id = id;
+    this.attributes = product.attributes;
+  }
+
   public BigInteger getId()
   {
     return id;
