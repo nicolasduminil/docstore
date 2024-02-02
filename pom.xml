@@ -13,6 +13,7 @@
     <module>docstore-repository</module>
     <module>docstore-service</module>
     <module>docstore-api</module>
+    <module>dockstore-infra</module>
   </modules>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -61,10 +62,13 @@
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-maven-plugin</artifactId>
           <version>${quarkus.platform.version}</version>
+          <extensions>true</extensions>
           <executions>
             <execution>
               <goals>
                 <goal>build</goal>
+                <goal>generate-code</goal>
+                <goal>generate-code-tests</goal>
               </goals>
             </execution>
           </executions>
@@ -78,6 +82,42 @@
               <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
             </systemPropertyVariables>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${surefire-plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+              <configuration>
+                <systemPropertyVariables>
+                  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                </systemPropertyVariables>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>io.smallrye</groupId>
+          <artifactId>jandex-maven-plugin</artifactId>
+          <version>3.0.5</version>
+          <executions>
+            <execution>
+              <id>make-index</id>
+              <goals>
+                <goal>jandex</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.dkanejs.maven.plugins</groupId>
+          <artifactId>docker-compose-maven-plugin</artifactId>
+          <version>4.0.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
