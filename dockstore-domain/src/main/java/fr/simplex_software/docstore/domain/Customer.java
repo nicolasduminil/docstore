@@ -7,7 +7,7 @@ import org.bson.codecs.pojo.annotations.*;
 import java.math.*;
 import java.util.*;
 
-@MongoEntity(collection="Customers")
+@MongoEntity(database = "mdb", collection="Customers")
 public class Customer
 {
   @BsonId
@@ -15,6 +15,8 @@ public class Customer
   private String firstName, lastName;
   private InternetAddress email;
   private Set<Address> addresses;
+
+  public Customer() {}
 
   public Customer(String firstName, String lastName)
   {

@@ -6,7 +6,7 @@ import org.bson.codecs.pojo.annotations.*;
 import java.math.*;
 import java.util.*;
 
-@MongoEntity(collection="Products")
+@MongoEntity(database = "mdb", collection="Products")
 public class Product
 {
   @BsonId
@@ -14,6 +14,8 @@ public class Product
   private String name, description;
   private BigDecimal price;
   private Map<String, String> attributes = new HashMap<>();
+
+  public Product() {}
 
   public Product(String name, String description, BigDecimal price)
   {

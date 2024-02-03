@@ -1,9 +1,11 @@
 package fr.simplex_software.docstore.domain;
 
+import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
 import java.math.*;
 
+@MongoEntity(database = "mdb", collection="OrderItems")
 public class OrderItem
 {
   @BsonId
@@ -11,6 +13,8 @@ public class OrderItem
   private BigInteger productId;
   private BigDecimal price;
   private int amount;
+
+  public OrderItem() {}
 
   public OrderItem(BigInteger productId, BigDecimal price, int amount)
   {

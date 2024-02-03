@@ -2,7 +2,11 @@ package fr.simplex_software.docstore.domain;
 
 public class Address
 {
-  private final String street, city, country;
+  private String street, city, country;
+
+  public Address()
+  {
+  }
 
   public Address(String street, String city, String country)
   {

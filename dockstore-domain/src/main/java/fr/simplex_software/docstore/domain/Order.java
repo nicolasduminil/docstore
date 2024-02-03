@@ -6,7 +6,7 @@ import org.bson.codecs.pojo.annotations.*;
 import java.math.*;
 import java.util.*;
 
-@MongoEntity(collection="Orders")
+@MongoEntity(database = "mdb", collection="Orders")
 public class Order
 {
   @BsonId
@@ -15,6 +15,8 @@ public class Order
   private Address shippingAddress;
   private Address billingAddress;
   private Set<OrderItem> orderItemSet = new HashSet<>();
+
+  public Order() {}
 
   public Order(BigInteger customerId, Address shippingAddress, Address billingAddress)
   {
