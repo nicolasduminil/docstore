@@ -7,6 +7,6 @@ import jakarta.enterprise.context.*;
 import java.math.*;
 
 @ApplicationScoped
-public class ProductRepository implements PanacheMongoRepositoryBase<Product, BigInteger>
+public class ProductRepository implements PanacheMongoRepositoryBase<Product, Long>
 {
 }

@@ -6,6 +6,6 @@ import io.quarkus.mongodb.rest.data.panache.*;
 
 import java.math.*;
 
-public interface CustomerResource extends PanacheMongoRepositoryResource<CustomerRepository, Customer, BigInteger>
+public interface CustomerResource extends PanacheMongoRepositoryResource<CustomerRepository, Customer, Long>
 {
 }

@@ -1,8 +1,10 @@
 package fr.simplex_software.docstore.service.impl;
 
+import com.mongodb.*;
 import fr.simplex_software.docstore.domain.*;
 import fr.simplex_software.docstore.repository.*;
 import fr.simplex_software.docstore.service.*;
+import jakarta.enterprise.context.*;
 import jakarta.inject.*;
 import jakarta.ws.rs.*;
 
@@ -10,6 +12,7 @@ import java.math.*;
 import java.util.*;
 import java.util.stream.*;
 
+@ApplicationScoped
 public class OrderItemServiceImpl implements OrderItemService
 {
   public static final String FMT = "### OrderItemServiceImpl.findOrderItemsByProductId(): Can't find product having id %d";
@@ -26,14 +29,15 @@ public class OrderItemServiceImpl implements OrderItemService
   }
 
   @Override
-  public Optional<OrderItem> findOrderItemById(BigInteger id)
+  public Optional<OrderItem> findOrderItemById(Long id)
   {
     return orderItemRepository.findByIdOptional(id);
   }
 
   @Override
-  public List<OrderItem> findOrdersItemByProductId(BigInteger id)
+  public List<OrderItem> findOrdersItemByProduct(DBRef product)
   {
+    Long id = (Long)product.getId();
     return orderItemRepository.find("productId = ?1", productService.findProductById(id)
       .orElseThrow(() -> new NotFoundException(String.format(FMT, id)))).list();
   }
@@ -75,7 +79,7 @@ public class OrderItemServiceImpl implements OrderItemService
   }
 
   @Override
-  public void updateOrderItem(BigInteger id, OrderItem orderItem)
+  public void updateOrderItem(Long id, OrderItem orderItem)
   {
     orderItemRepository.persistOrUpdate(new OrderItem (id, orderItem));
   }

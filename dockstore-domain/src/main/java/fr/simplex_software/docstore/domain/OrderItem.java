@@ -1,5 +1,6 @@
 package fr.simplex_software.docstore.domain;
 
+import com.mongodb.*;
 import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
@@ -9,44 +10,44 @@ import java.math.*;
 public class OrderItem
 {
   @BsonId
-  private BigInteger id;
-  private BigInteger productId;
+  private Long id;
+  private DBRef product;
   private BigDecimal price;
   private int amount;
 
   public OrderItem() {}
 
-  public OrderItem(BigInteger productId, BigDecimal price, int amount)
+  public OrderItem(DBRef product, BigDecimal price, int amount)
   {
-    this.productId = productId;
+    this.product = product;
     this.price = price;
     this.amount = amount;
   }
 
-  public OrderItem(BigInteger id, OrderItem orderItem)
+  public OrderItem(Long id, OrderItem orderItem)
   {
-    this (orderItem.productId, orderItem.price, orderItem.amount);
+    this (orderItem.product, orderItem.price, orderItem.amount);
     this.id = orderItem.id;
   }
 
-  public BigInteger getId()
+  public Long getId()
   {
     return id;
   }
 
-  public void setId(BigInteger id)
+  public void setId(Long id)
   {
     this.id = id;
   }
 
-  public BigInteger getProductId()
+  public DBRef getProduct()
   {
-    return productId;
+    return product;
   }
 
-  public void setProductId(BigInteger productId)
+  public void setProduct(DBRef product)
   {
-    this.productId = productId;
+    this.product = product;
   }
 
   public BigDecimal getPrice()

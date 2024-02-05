@@ -1,16 +1,18 @@
 package fr.simplex_software.docstore.service.impl;
 
+import com.mongodb.*;
 import fr.simplex_software.docstore.domain.*;
 import fr.simplex_software.docstore.repository.*;
 import fr.simplex_software.docstore.service.*;
+import jakarta.enterprise.context.*;
 import jakarta.inject.*;
 import jakarta.mail.internet.*;
 import jakarta.ws.rs.*;
 
-import java.math.*;
 import java.util.*;
 import java.util.stream.*;
 
+@ApplicationScoped
 public class OrderServiceImpl implements OrderService
 {
   public static final String FMT = "### OrderServiceImpl.findOrdersByCustomerId(): Can't find customer having id %d";
@@ -28,7 +30,7 @@ public class OrderServiceImpl implements OrderService
   }
 
   @Override
-  public Optional<Order> findOrderById(BigInteger id)
+  public Optional<Order> findOrderById(Long id)
   {
     return orderRepository.findByIdOptional(id);
   }
@@ -46,8 +48,9 @@ public class OrderServiceImpl implements OrderService
   }
 
   @Override
-  public List<Order> findOrdersByCustomerId(BigInteger id)
+  public List<Order> findOrdersByCustomer(DBRef customer)
   {
+    Long id = (Long)customer.getId();
     return orderRepository.find("customerId = ?1", customerService.findCustomerById(id)
       .orElseThrow(() -> new NotFoundException(String.format(FMT, id)))).list();
   }
@@ -81,7 +84,7 @@ public class OrderServiceImpl implements OrderService
   }
 
   @Override
-  public void updateOrder(BigInteger id, Order order)
+  public void updateOrder(Long id, Order order)
   {
     orderRepository.persistOrUpdate(new Order (id, order));
   }

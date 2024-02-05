@@ -9,11 +9,11 @@ import java.util.*;
 public interface CustomerService
 {
   List<Customer> findAllCustomers();
-  Optional<Customer> findCustomerById (BigInteger id);
+  Optional<Customer> findCustomerById (Long id);
   List<Customer> findCustomersByFirstNameAndLastName (String firstName, String lastName);
   Optional<Customer> findCustomerByEmail (InternetAddress emaiAddress);
   List<Customer> findCustomersByAddress (Address address);
   void createCustomer (Customer customer);
-  void updateCustomer (BigInteger id, Customer customer);
+  void updateCustomer (Long id, Customer customer);
   void removeCustomer (Customer customer);
 }

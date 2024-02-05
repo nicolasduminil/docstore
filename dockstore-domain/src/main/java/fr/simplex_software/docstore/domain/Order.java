@@ -1,5 +1,6 @@
 package fr.simplex_software.docstore.domain;
 
+import com.mongodb.*;
 import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
@@ -10,44 +11,46 @@ import java.util.*;
 public class Order
 {
   @BsonId
-  private BigInteger id;
-  private BigInteger customerId;
+  private Long id;
+  private DBRef customer;
   private Address shippingAddress;
   private Address billingAddress;
   private Set<OrderItem> orderItemSet = new HashSet<>();
 
   public Order() {}
 
-  public Order(BigInteger customerId, Address shippingAddress, Address billingAddress)
+  public Order(DBRef customer, Address shippingAddress, Address billingAddress)
   {
-    this.customerId = customerId;
+    this.customer = customer;
     this.shippingAddress = shippingAddress;
     this.billingAddress = billingAddress;
   }
 
-  public Order (BigInteger id, Order order)
+  public Order (Long id, Order order)
   {
-    this (id, order.shippingAddress, order.billingAddress);
+    this (order.customer, order.shippingAddress, order.billingAddress);
+    this.id = id;
+    this.orderItemSet = order.orderItemSet;
   }
 
-  public BigInteger getId()
+  public Long getId()
   {
     return id;
   }
 
-  public void setId(BigInteger id)
+  public void setId(Long id)
   {
     this.id = id;
   }
 
-  public BigInteger getCustomerId()
+  public DBRef getCustomer()
   {
-    return customerId;
+    return customer;
   }
 
-  public void setCustomerId(BigInteger customerId)
+  public void setCustomer(DBRef customer)
   {
-    this.customerId = customerId;
+    this.customer = customer;
   }
 
   public Address getShippingAddress()

@@ -3,12 +3,14 @@ package fr.simplex_software.docstore.service.impl;
 import fr.simplex_software.docstore.domain.*;
 import fr.simplex_software.docstore.repository.*;
 import fr.simplex_software.docstore.service.*;
+import jakarta.enterprise.context.*;
 import jakarta.inject.*;
 
 import java.math.*;
 import java.util.*;
 import java.util.stream.*;
 
+@ApplicationScoped
 public class ProductServiceImpl implements ProductService
 {
   @Inject
@@ -21,7 +23,7 @@ public class ProductServiceImpl implements ProductService
   }
 
   @Override
-  public Optional<Product> findProductById(BigInteger id)
+  public Optional<Product> findProductById(Long id)
   {
     return productRepository.findByIdOptional(id);
   }
@@ -59,7 +61,7 @@ public class ProductServiceImpl implements ProductService
   }
 
   @Override
-  public void updateProduct(BigInteger id, Product product)
+  public void updateProduct(Long id, Product product)
   {
     productRepository.persistOrUpdate(new Product (id, product));
   }

@@ -11,7 +11,7 @@ import java.util.*;
 public class Customer
 {
   @BsonId
-  private BigInteger id;
+  private Long id;
   private String firstName, lastName;
   private InternetAddress email;
   private Set<Address> addresses;
@@ -30,19 +30,19 @@ public class Customer
     this.email = email;
   }
 
-  public Customer (BigInteger id, Customer customer)
+  public Customer (Long id, Customer customer)
   {
     this (customer.firstName, customer.getLastName(), customer.email);
     this.addresses = customer.addresses;
     this.id = id;
   }
 
-  public BigInteger getId()
+  public Long getId()
   {
     return id;
   }
 
-  public void setId(BigInteger id)
+  public void setId(Long id)
   {
     this.id = id;
   }

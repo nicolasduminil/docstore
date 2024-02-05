@@ -3,12 +3,14 @@ package fr.simplex_software.docstore.service.impl;
 import fr.simplex_software.docstore.domain.*;
 import fr.simplex_software.docstore.repository.*;
 import fr.simplex_software.docstore.service.*;
+import jakarta.enterprise.context.*;
 import jakarta.inject.*;
 import jakarta.mail.internet.*;
 
 import java.math.*;
 import java.util.*;
 
+@ApplicationScoped
 public class CustomerServiceImpl implements CustomerService
 {
   @Inject
@@ -21,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService
   }
 
   @Override
-  public Optional<Customer> findCustomerById(BigInteger id)
+  public Optional<Customer> findCustomerById(Long id)
   {
     return customerRepository.findByIdOptional(id);
   }
@@ -51,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService
   }
 
   @Override
-  public void updateCustomer(BigInteger id, Customer customer)
+  public void updateCustomer(Long id, Customer customer)
   {
     customerRepository.persistOrUpdate(new Customer (id, customer));
   }

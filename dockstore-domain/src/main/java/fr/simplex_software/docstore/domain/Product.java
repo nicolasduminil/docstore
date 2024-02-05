@@ -10,7 +10,7 @@ import java.util.*;
 public class Product
 {
   @BsonId
-  private BigInteger id;
+  private Long id;
   private String name, description;
   private BigDecimal price;
   private Map<String, String> attributes = new HashMap<>();
@@ -24,19 +24,19 @@ public class Product
     this.price = price;
   }
 
-  public Product (BigInteger id, Product product)
+  public Product (Long id, Product product)
   {
     this (product.name, product.description, product.price);
     this.id = id;
     this.attributes = product.attributes;
   }
 
-  public BigInteger getId()
+  public Long getId()
   {
     return id;
   }
 
-  public void setId(BigInteger id)
+  public void setId(Long id)
   {
     this.id = id;
   }

@@ -7,6 +7,6 @@ import jakarta.enterprise.context.*;
 import java.math.*;
 
 @ApplicationScoped
-public class CustomerRepository implements PanacheMongoRepositoryBase<Customer, BigInteger>
+public class CustomerRepository implements PanacheMongoRepositoryBase<Customer, Long>
 {
 }

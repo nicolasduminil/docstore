@@ -6,6 +6,6 @@ import io.quarkus.mongodb.rest.data.panache.*;
 
 import java.math.*;
 
-public interface OrderItemResource extends PanacheMongoRepositoryResource<OrderItemRepository, OrderItem, BigInteger>
+public interface OrderItemResource extends PanacheMongoRepositoryResource<OrderItemRepository, OrderItem, Long>
 {
 }
