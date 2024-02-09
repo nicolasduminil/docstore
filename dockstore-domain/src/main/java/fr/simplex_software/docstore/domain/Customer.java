@@ -28,6 +28,7 @@ public class Customer
   {
     this (firstName, lastName);
     this.email = email;
+    this.addresses = new HashSet<>();
   }
 
   public Customer (Long id, Customer customer)
