@@ -9,8 +9,6 @@ import org.bson.codecs.pojo.annotations.*;
 import java.util.*;
 
 @MongoEntity(database = "mdb", collection="Orders")
-@JsonSerialize(using = JaksonDBRefSerializer.class)
-@JsonDeserialize(using = JacksonDBRefDeserializer.class)
 public class Order
 {
   @BsonId
