@@ -23,6 +23,9 @@ public class JacksonDBRefDeserializer extends StdDeserializer<DBRef>
   public DBRef deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException
   {
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-    return new DBRef(node.asText("databaseName"),node.asText("collectionName"), node.asText("id"));
+    System.out.println ("### JaksonDBRefDeserializer.deserialize(): " + new ObjectMapper().writeValueAsString(node));
+    DBRef dbRef = new DBRef(node.asText("databaseName"),node.asText("collectionName"), node.asText("id"));
+    System.out.println ("### JaksonDBRefDeserializer.deserialize(): " + dbRef.toString());
+    return dbRef;
   }
 }

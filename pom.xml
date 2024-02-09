@@ -23,6 +23,7 @@
     <quarkus.platform.version>3.7.1</quarkus.platform.version>
     <surefire-plugin.version>3.2.5</surefire-plugin.version>
     <jakarta-email.version>2.1.2</jakarta-email.version>
+    <assertj.version>3.25.3</assertj.version>
   </properties>
   <dependencyManagement>
     <dependencies>

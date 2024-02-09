@@ -22,10 +22,14 @@ public class JaksonDBRefSerializer extends StdSerializer<DBRef>
   @Override
   public void serialize(DBRef dbRef, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
   {
-    jsonGenerator.writeStartObject();
-    jsonGenerator.writeObjectField("id", dbRef.getId());
-    jsonGenerator.writeStringField("collectionName", dbRef.getCollectionName());
-    jsonGenerator.writeStringField("databaseName", dbRef.getDatabaseName());
-    jsonGenerator.writeEndObject();
+    System.out.println ("### JaksonDBRefSerializer.serialize(): DBRef " + dbRef.getId() + " " + dbRef.getCollectionName() + " " + dbRef.getDatabaseName());
+    if (dbRef != null)
+    {
+      jsonGenerator.writeStartObject();
+      jsonGenerator.writeStringField("id", (String)dbRef.getId());
+      jsonGenerator.writeStringField("collectionName", dbRef.getCollectionName());
+      jsonGenerator.writeStringField("databaseName", dbRef.getDatabaseName());
+      jsonGenerator.writeEndObject();
+    }
   }
 }
