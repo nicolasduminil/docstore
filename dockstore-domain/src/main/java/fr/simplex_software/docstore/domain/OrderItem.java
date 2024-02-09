@@ -1,12 +1,16 @@
 package fr.simplex_software.docstore.domain;
 
+import com.fasterxml.jackson.databind.annotation.*;
 import com.mongodb.*;
+import fr.simplex_software.docstore.domain.serializers.*;
 import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
 import java.math.*;
 
 @MongoEntity(database = "mdb", collection="OrderItems")
+@JsonSerialize(using = JaksonDBRefSerializer.class)
+@JsonDeserialize(using = JacksonDBRefDeserializer.class)
 public class OrderItem
 {
   @BsonId
