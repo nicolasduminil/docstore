@@ -24,6 +24,7 @@ public class JacksonDBRefDeserializer extends StdDeserializer<DBRef>
   {
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
     System.out.println ("### JaksonDBRefDeserializer.deserialize(): " + new ObjectMapper().writeValueAsString(node));
+    System.out.println ("### JaksonDBRefDeserializer.deserialize(): " + node.asText("databaseName") + " " + node.asText("collectionName") + " " + node.asText("id") + " toto");
     DBRef dbRef = new DBRef(node.asText("databaseName"),node.asText("collectionName"), node.asText("id"));
     System.out.println ("### JaksonDBRefDeserializer.deserialize(): " + dbRef.toString());
     return dbRef;
