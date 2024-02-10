@@ -7,9 +7,10 @@ import org.apache.http.*;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.*;
+import static org.assertj.core.api.Assertions.*;
 
-@QuarkusIntegrationTest
-public class CustomerResourceIT
+@QuarkusTest
+public class CustomerResourceTest
 {
   private  static Customer customer;
 
@@ -31,9 +32,14 @@ public class CustomerResourceIT
       .statusCode(HttpStatus.SC_CREATED);
   }
 
-  @Test
+  /*@Test
   public void testGetCustomerShouldSucceed()
   {
-
-  }
+    assertThat (given()
+      .header("Content-type", "application/json")
+      .when().get("/customer")
+      .then()
+      .statusCode(HttpStatus.SC_OK)
+      .extract().response().jsonPath().getString())
+  }*/
 }

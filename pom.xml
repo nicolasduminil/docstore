@@ -24,6 +24,9 @@
     <surefire-plugin.version>3.2.5</surefire-plugin.version>
     <jakarta-email.version>2.1.2</jakarta-email.version>
     <assertj.version>3.25.3</assertj.version>
+    <skipTests>false</skipTests>
+    <skipUTs>${skipTests}</skipUTs>
+    <skipITs>${skipTests}</skipITs>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -82,6 +85,7 @@
             <systemPropertyVariables>
               <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
             </systemPropertyVariables>
+            <skipTests>${skipUTs}</skipTests>
           </configuration>
         </plugin>
         <plugin>
@@ -94,13 +98,15 @@
                 <goal>integration-test</goal>
                 <goal>verify</goal>
               </goals>
-              <configuration>
-                <systemPropertyVariables>
-                  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                </systemPropertyVariables>
-              </configuration>
             </execution>
           </executions>
+          <configuration>
+            <skipTests>${skipTests}</skipTests>
+            <skipITs>${skipITs}</skipITs>
+            <systemPropertyVariables>
+              <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            </systemPropertyVariables>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>io.smallrye</groupId>
