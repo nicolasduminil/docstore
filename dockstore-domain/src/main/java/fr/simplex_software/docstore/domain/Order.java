@@ -16,7 +16,7 @@ public class Order
   private DBRef customer;
   private Address shippingAddress;
   private Address billingAddress;
-  private Set<DBRef> orderItemSet = new HashSet<>();
+  private Set<OrderItem> orderItemSet = new HashSet<>();
 
   public Order() {}
 

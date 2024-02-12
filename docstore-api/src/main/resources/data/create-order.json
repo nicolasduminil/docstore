@@ -19,12 +19,12 @@
     {
       "id": 1,
       "product": {
-        "id": "string",
-        "collectionName": "string",
-        "databaseName": "string"
+        "id": "100",
+        "collectionName": "Products",
+        "databaseName": "mdb"
       },
-      "price": 0,
-      "amount": 0
+      "price": 549.30,
+      "amount": 1
     }
   ]
 }

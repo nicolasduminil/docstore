@@ -69,6 +69,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <quarkus.http.test-host>localhost</quarkus.http.test-host>
+            <quarkus.http.test-port>8080</quarkus.http.test-port>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
     </plugins>
   </build>
