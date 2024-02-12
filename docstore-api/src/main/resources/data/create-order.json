@@ -1,0 +1,30 @@
+{
+  "id": 1000,
+  "customer": {
+    "id": "10",
+    "collectionName": "Customers",
+    "databaseName": "mdb"
+  },
+  "shippingAddress": {
+    "street": "75, rue Véronique Coulon",
+    "city": "Coste",
+    "country": "France"
+  },
+  "billingAddress": {
+    "street": "75, rue Véronique Coulon",
+    "city": "Coste",
+    "country": "France"
+  },
+  "orderItemSet": [
+    {
+      "id": 1,
+      "product": {
+        "id": "string",
+        "collectionName": "string",
+        "databaseName": "string"
+      },
+      "price": 0,
+      "amount": 0
+    }
+  ]
+}

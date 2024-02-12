@@ -1,0 +1,11 @@
+{
+  "id": 100,
+  "name": "iPhone 9",
+  "description": "An apple mobile which is nothing like apple",
+  "price": 549.30,
+  "attributes": {
+    "additionalProp1": "Apple",
+    "additionalProp2": "smartphone",
+    "additionalProp3": "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
+  }
+}

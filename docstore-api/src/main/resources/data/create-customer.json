@@ -1,0 +1,25 @@
+{
+  "id": 10,
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": {
+    "address": "john.doe@gmail.com",
+    "personal": "John Doe",
+    "encodedPersonal": "John Doe",
+    "type": "personal",
+    "simple": true,
+    "group": true
+  },
+  "addresses": [
+    {
+      "street": "75, rue Véronique Coulon",
+      "city": "Coste",
+      "country": "France"
+    },
+    {
+      "street": "Wulfweg 827",
+      "city": "Bautzen",
+      "country": "Germany"
+    }
+  ]
+}
