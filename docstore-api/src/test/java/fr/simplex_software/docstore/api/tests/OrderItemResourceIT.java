@@ -108,7 +108,7 @@ public class OrderItemResourceIT
       .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getObject("price", DBRef.class);
+      .extract().body().jsonPath().getObject("product", DBRef.class);
     assertThat (given()
       .when().pathParam("id", dbRef.getId()).get("/product/{id}")
       .then()
