@@ -52,7 +52,7 @@ public class ProductResourceIT
       .when().get("/product")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 9");
+      .extract().body().jsonPath().getString("name[0]")).isEqualTo("iPhone 9");
   }
 
   @Test

@@ -71,7 +71,7 @@ public class OrderItemResourceIT
       .when().get("/order-item")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("price")).isEqualTo("549.30");
+      .extract().body().jsonPath().getString("price[0]")).isEqualTo("549.3");
   }
 
   @Test
@@ -96,7 +96,7 @@ public class OrderItemResourceIT
       .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("price")).isEqualTo("550.00");
+      .extract().body().jsonPath().getString("price")).isEqualTo("550.0");
   }
 
   @Test

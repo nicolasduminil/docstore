@@ -7,7 +7,7 @@ import org.bson.codecs.pojo.annotations.*;
 import java.math.*;
 import java.util.*;
 
-@MongoEntity(database = "mdb", collection="Customers")
+@MongoEntity(database = "mdb", collection="Customers", clientName = "")
 public class Customer
 {
   @BsonId
