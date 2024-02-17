@@ -48,7 +48,7 @@
     </dependency>
     <dependency>
       <groupId>fr.simplex-software</groupId>
-      <artifactId>dockstore-domain</artifactId>
+      <artifactId>docstore-domain</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.simplex-software</groupId>

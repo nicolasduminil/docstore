@@ -8,7 +8,7 @@
     <artifactId>docstore</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>dockstore-domain</artifactId>
+  <artifactId>docstore-domain</artifactId>
   <name>DocStore :: the domain module</name>
   <dependencies>
     <dependency>
