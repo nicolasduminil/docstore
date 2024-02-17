@@ -37,7 +37,7 @@ public class OrderItemResourceIT
 
   @Test
   @Order(5)
-  public void testCreateProductShouldSucceed()
+  public void testCreateProductForOrderItemShouldSucceed()
   {
     product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
       BigDecimal.valueOf(549.30));
@@ -108,9 +108,9 @@ public class OrderItemResourceIT
       .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getObject("product", DBRef.class);
+      .extract().body().jsonPath().getObject("product", DocRef.class);
     assertThat (given()
-      .when().pathParam("id", dbRef.getId()).get("/product/{id}")
+      .when().pathParam("id", dbRef.getCollectionName()).get("/product/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
       .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 9");

@@ -23,10 +23,7 @@ public class DocstoreDBRefCodec implements Codec<DBRef>
     Codec codec = this.registry.get(value.getId().getClass());
     codec.encode(writer, value.getId(), encoderContext);
     if (value.getDatabaseName() != null)
-    {
       writer.writeString("$db", value.getDatabaseName());
-    }
-
     writer.writeEndDocument();
   }
 
@@ -37,7 +34,6 @@ public class DocstoreDBRefCodec implements Codec<DBRef>
 
   public DBRef decode(BsonReader reader, DecoderContext decoderContext)
   {
-    //throw new UnsupportedOperationException("DocstoreDBRefCodec does not support decoding");
     reader.readStartDocument();
     DBRef dbRef = new DBRef(reader.readString("$ref"), reader.readString("$id"), reader.readString("$db"));
     reader.readEndDocument();
