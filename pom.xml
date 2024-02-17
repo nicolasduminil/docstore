@@ -11,7 +11,6 @@
   <modules>
     <module>dockstore-domain</module>
     <module>docstore-repository</module>
-    <module>docstore-service</module>
     <module>docstore-api</module>
     <module>dockstore-infra</module>
   </modules>
