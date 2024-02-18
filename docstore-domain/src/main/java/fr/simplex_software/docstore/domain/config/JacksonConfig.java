@@ -14,7 +14,7 @@ public class JacksonConfig implements ObjectMapperCustomizer
   public void customize(ObjectMapper objectMapper)
   {
     SimpleModule simpleModule = new SimpleModule();
-    objectMapper.registerModule(simpleModule.addDeserializer(DBRef.class, new JacksonDBRefDeserializer()));
-    objectMapper.registerModule(simpleModule.addSerializer(DBRef.class, new JaksonDBRefSerializer()));
+    objectMapper.registerModule(simpleModule.addDeserializer(DBRef.class, new DBRefDeserializer()));
+    objectMapper.registerModule(simpleModule.addSerializer(DBRef.class, new DBRefSerializer()));
   }
 }

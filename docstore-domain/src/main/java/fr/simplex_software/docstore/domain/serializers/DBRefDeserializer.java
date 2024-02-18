@@ -7,14 +7,14 @@ import com.mongodb.*;
 
 import java.io.*;
 
-public class JacksonDBRefDeserializer extends StdDeserializer<DBRef>
+public class DBRefDeserializer extends StdDeserializer<DBRef>
 {
-  public JacksonDBRefDeserializer()
+  public DBRefDeserializer()
   {
     this(null);
   }
 
-  public JacksonDBRefDeserializer(Class<DBRef> dbrefClass)
+  public DBRefDeserializer(Class<DBRef> dbrefClass)
   {
     super(dbrefClass);
   }

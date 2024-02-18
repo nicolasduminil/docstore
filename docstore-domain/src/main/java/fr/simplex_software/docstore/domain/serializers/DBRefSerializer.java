@@ -7,14 +7,14 @@ import com.mongodb.*;
 
 import java.io.*;
 
-public class JaksonDBRefSerializer extends StdSerializer<DBRef>
+public class DBRefSerializer extends StdSerializer<DBRef>
 {
-  public JaksonDBRefSerializer()
+  public DBRefSerializer()
   {
     this(null);
   }
 
-  protected JaksonDBRefSerializer(Class<DBRef> dbrefClass)
+  protected DBRefSerializer(Class<DBRef> dbrefClass)
   {
     super(dbrefClass);
   }
@@ -22,7 +22,6 @@ public class JaksonDBRefSerializer extends StdSerializer<DBRef>
   @Override
   public void serialize(DBRef dbRef, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
   {
-    System.out.println ("### JaksonDBRefSerializer.serialize(): DBRef " + dbRef.getId() + " " + dbRef.getCollectionName() + " " + dbRef.getDatabaseName());
     if (dbRef != null)
     {
       jsonGenerator.writeStartObject();
