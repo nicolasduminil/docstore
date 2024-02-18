@@ -15,3 +15,6 @@ db.createUser(
       }]
   });
 db.createCollection("Customers");
+db.createCollection("Products");
+db.createCollection("Orders");
+db.createCollection("OrderItems");

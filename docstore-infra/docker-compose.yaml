@@ -33,6 +33,7 @@ services:
     command: '/bin/bash -c "sleep 5; mongosh $$CONN_STR --eval \"show dbs;\""'
     depends_on:
       - mongo
+    container_name: test
   docstore:
     image: quarkus-nosql-tests/docstore-mongodb:1.0-SNAPSHOT
     depends_on:

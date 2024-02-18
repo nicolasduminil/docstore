@@ -1,8 +1,6 @@
 package fr.simplex_software.docstore.domain;
 
-import com.fasterxml.jackson.databind.annotation.*;
 import com.mongodb.*;
-import fr.simplex_software.docstore.domain.serializers.*;
 import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
@@ -16,7 +14,7 @@ public class Order
   private DBRef customer;
   private Address shippingAddress;
   private Address billingAddress;
-  private Set<OrderItem> orderItemSet = new HashSet<>();
+  private Set<DBRef> orderItemSet = new HashSet<>();
 
   public Order() {}
 
@@ -74,22 +72,22 @@ public class Order
     this.billingAddress = billingAddress;
   }
 
-  public void addOrderItem (OrderItem orderItem)
+  public void addOrderItem (DBRef orderItem)
   {
     orderItemSet.add(orderItem);
   }
 
-  public void removeOrderItem (OrderItem orderItem)
+  public void removeOrderItem (DBRef orderItem)
   {
     orderItemSet.remove(orderItem);
   }
 
-  public Set<OrderItem> getOrderItemSet()
+  public Set<DBRef> getOrderItemSet()
   {
     return orderItemSet;
   }
 
-  public void setOrderItemSet(Set<OrderItem> orderItemSet)
+  public void setOrderItemSet(Set<DBRef> orderItemSet)
   {
     this.orderItemSet = orderItemSet;
   }

@@ -1,8 +1,6 @@
 package fr.simplex_software.docstore.domain;
 
-import com.fasterxml.jackson.databind.annotation.*;
 import com.mongodb.*;
-import fr.simplex_software.docstore.domain.serializers.*;
 import io.quarkus.mongodb.panache.common.*;
 import org.bson.codecs.pojo.annotations.*;
 
