@@ -22,9 +22,7 @@ public class DBRefDeserializer extends StdDeserializer<DBRef>
   @Override
   public DBRef deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException
   {
-    System.out.println ("### JaksonDBRefDeserializer.deserialize()");
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-    System.out.println ("### JaksonDBRefDeserializer.deserialize(): databaseName " + node.findValue("databaseName").asText() + " collectionName " + node.findValue("collectionName").asText() + " id " + node.findValue("id").asText());
     return new DBRef(node.findValue("databaseName").asText(), node.findValue("collectionName").asText(), node.findValue("id").asText());
   }
 }
