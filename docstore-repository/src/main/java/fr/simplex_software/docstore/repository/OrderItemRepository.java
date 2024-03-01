@@ -1,12 +1,14 @@
 package fr.simplex_software.docstore.repository;
 
 import fr.simplex_software.docstore.domain.*;
-import io.quarkus.mongodb.panache.*;
-import jakarta.enterprise.context.*;
+import jakarta.mail.internet.*;
 
-import java.math.*;
+import java.util.*;
 
-@ApplicationScoped
-public class OrderItemRepository implements PanacheMongoRepositoryBase<OrderItem, Long>
+public interface OrderItemRepository
 {
+  void index (OrderItem orderItem);
+  OrderItem get (String id);
+  List<OrderItem> searchByProductId (String productId);
+  List<OrderItem> search (String term, String match);
 }

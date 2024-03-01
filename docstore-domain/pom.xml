@@ -13,7 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-mongodb-rest-data-panache</artifactId>
+      <artifactId>quarkus-elasticsearch-java-client</artifactId>
     </dependency>
     <dependency>
       <groupId>jakarta.mail</groupId>

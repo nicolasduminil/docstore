@@ -1,12 +1,14 @@
 package fr.simplex_software.docstore.repository;
 
 import fr.simplex_software.docstore.domain.*;
-import io.quarkus.mongodb.panache.*;
-import jakarta.enterprise.context.*;
 
-import java.math.*;
+import java.util.*;
 
-@ApplicationScoped
-public class ProductRepository implements PanacheMongoRepositoryBase<Product, Long>
+public interface ProductRepository
 {
+  void index (Product product);
+  Product get (String id);
+  List<Product> searchByAddress (Address address);
+  List<Product> searchByName (String name);
+  List<Product> search (String term, String match);
 }

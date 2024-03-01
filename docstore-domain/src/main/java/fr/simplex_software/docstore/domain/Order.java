@@ -1,55 +1,49 @@
 package fr.simplex_software.docstore.domain;
 
-import com.mongodb.*;
-import io.quarkus.mongodb.panache.common.*;
-import org.bson.codecs.pojo.annotations.*;
-
 import java.util.*;
 
-@MongoEntity(database = "mdb", collection="Orders")
 public class Order
 {
-  @BsonId
-  private Long id;
-  private DBRef customer;
+  private String id;
+  private String customerId;
   private Address shippingAddress;
   private Address billingAddress;
-  private Set<DBRef> orderItemSet = new HashSet<>();
+  private Set<String> orderItemIdSet = new HashSet<>();
 
   public Order() {}
 
-  public Order(DBRef customer, Address shippingAddress, Address billingAddress)
+  public Order(String customerId, Address shippingAddress, Address billingAddress)
   {
-    this.customer = customer;
+    this.customerId = customerId;
     this.shippingAddress = shippingAddress;
     this.billingAddress = billingAddress;
   }
 
-  public Order (Long id, Order order)
+  public Order (String id, Order order)
   {
-    this (order.customer, order.shippingAddress, order.billingAddress);
+    this (order.customerId, order.shippingAddress, order.billingAddress);
     this.id = id;
-    this.orderItemSet = order.orderItemSet;
+    this.orderItemIdSet = order.orderItemIdSet;
   }
 
-  public Long getId()
+  public String getId()
   {
     return id;
   }
 
-  public void setId(Long id)
+  public void setId(String id)
   {
     this.id = id;
   }
 
-  public DBRef getCustomer()
+  public String getCustomerId()
   {
-    return customer;
+    return customerId;
   }
 
-  public void setCustomer(DBRef customer)
+  public void setCustomerId(String customerId)
   {
-    this.customer = customer;
+    this.customerId = customerId;
   }
 
   public Address getShippingAddress()
@@ -72,23 +66,23 @@ public class Order
     this.billingAddress = billingAddress;
   }
 
-  public void addOrderItem (DBRef orderItem)
+  public void addOrderItemId (String orderItemId)
   {
-    orderItemSet.add(orderItem);
+    orderItemIdSet.add(orderItemId);
   }
 
-  public void removeOrderItem (DBRef orderItem)
+  public void removeOrderItemId (String orderItemId)
   {
-    orderItemSet.remove(orderItem);
+    orderItemIdSet.remove(orderItemId);
   }
 
-  public Set<DBRef> getOrderItemSet()
+  public Set<String> getOrderItemIdSet()
   {
-    return orderItemSet;
+    return orderItemIdSet;
   }
 
-  public void setOrderItemSet(Set<DBRef> orderItemSet)
+  public void setOrderItemIdSet(Set<String> orderItemIdSet)
   {
-    this.orderItemSet = orderItemSet;
+    this.orderItemIdSet = orderItemIdSet;
   }
 }

@@ -1,53 +1,47 @@
 package fr.simplex_software.docstore.domain;
 
-import com.mongodb.*;
-import io.quarkus.mongodb.panache.common.*;
-import org.bson.codecs.pojo.annotations.*;
-
 import java.math.*;
 
-@MongoEntity(database = "mdb", collection="OrderItems")
 public class OrderItem
 {
-  @BsonId
-  private Long id;
-  private DBRef product;
+  private String id;
+  private String productId;
   private BigDecimal price;
   private int amount;
 
   public OrderItem() {}
 
-  public OrderItem(DBRef product, BigDecimal price, int amount)
+  public OrderItem(String productId, BigDecimal price, int amount)
   {
-    this.product = product;
+    this.productId = productId;
     this.price = price;
     this.amount = amount;
   }
 
-  public OrderItem(Long id, OrderItem orderItem)
+  public OrderItem(String id, OrderItem orderItem)
   {
-    this (orderItem.product, orderItem.price, orderItem.amount);
+    this (orderItem.productId, orderItem.price, orderItem.amount);
     this.id = orderItem.id;
   }
 
-  public Long getId()
+  public String getId()
   {
     return id;
   }
 
-  public void setId(Long id)
+  public void setId(String id)
   {
     this.id = id;
   }
 
-  public DBRef getProduct()
+  public String getProductId()
   {
-    return product;
+    return productId;
   }
 
-  public void setProduct(DBRef product)
+  public void setProductId(String productId)
   {
-    this.product = product;
+    this.productId = productId;
   }
 
   public BigDecimal getPrice()

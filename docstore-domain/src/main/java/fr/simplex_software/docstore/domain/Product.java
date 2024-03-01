@@ -1,16 +1,11 @@
 package fr.simplex_software.docstore.domain;
 
-import io.quarkus.mongodb.panache.common.*;
-import org.bson.codecs.pojo.annotations.*;
-
 import java.math.*;
 import java.util.*;
 
-@MongoEntity(database = "mdb", collection="Products")
 public class Product
 {
-  @BsonId
-  private Long id;
+  private String id;
   private String name, description;
   private BigDecimal price;
   private Map<String, String> attributes = new HashMap<>();
@@ -24,19 +19,19 @@ public class Product
     this.price = price;
   }
 
-  public Product (Long id, Product product)
+  public Product (String id, Product product)
   {
     this (product.name, product.description, product.price);
     this.id = id;
     this.attributes = product.attributes;
   }
 
-  public Long getId()
+  public String getId()
   {
     return id;
   }
 
-  public void setId(Long id)
+  public void setId(String id)
   {
     this.id = id;
   }

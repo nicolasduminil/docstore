@@ -1,12 +1,15 @@
 package fr.simplex_software.docstore.repository;
 
 import fr.simplex_software.docstore.domain.*;
-import io.quarkus.mongodb.panache.*;
-import jakarta.enterprise.context.*;
+import jakarta.mail.internet.*;
 
-import java.math.*;
+import java.util.*;
 
-@ApplicationScoped
-public class CustomerRepository implements PanacheMongoRepositoryBase<Customer, Long>
+public interface CustomerRepository
 {
+  void index (Customer customer);
+  Customer get (String id);
+  List<Customer> searchByAddress (Address address);
+  List<Customer> searchByEmailAddress (InternetAddress emailAddress);
+  List<Customer> search (String term, String match);
 }
