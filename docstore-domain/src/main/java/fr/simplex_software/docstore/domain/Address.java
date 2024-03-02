@@ -29,4 +29,9 @@ public class Address
   {
     return country;
   }
+
+  public String toString()
+  {
+    return street + " " + city + " " + country;
+  }
 }

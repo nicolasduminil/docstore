@@ -1,6 +1,5 @@
 package fr.simplex_software.docstore.api.tests;
 
-import com.mongodb.*;
 import fr.simplex_software.docstore.domain.Order;
 import fr.simplex_software.docstore.domain.*;
 import io.quarkus.test.junit.*;
@@ -19,10 +18,10 @@ public class OrderResourceIT
   @BeforeAll
   public static void beforeAll()
   {
-    order = new Order (new DBRef("mdb", "Customers", 10),
+    order = new Order ("",
       new Address ("75, rue Véronique Coulon", "Coste", "France"),
       new Address ("Wulfweg 827", "Bautzen", "Germany"));
-    order.setId(1000l);
+    order.setId("1000l");
   }
 
   @AfterAll

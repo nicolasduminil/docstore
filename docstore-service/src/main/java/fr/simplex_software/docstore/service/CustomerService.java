@@ -8,7 +8,7 @@ import java.util.*;
 
 public interface CustomerService
 {
-  void doIndex (Customer customer) throws IOException;
+  String doIndex (Customer customer) throws IOException;
   Customer getCustomer (String id) throws IOException;
   List<Customer> searchCustomerByAddress (Address address) throws IOException;
   List<Customer> searchCustomerByEmailAddress (InternetAddress emailAddress) throws IOException;

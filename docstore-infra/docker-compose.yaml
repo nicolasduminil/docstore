@@ -1,49 +1,22 @@
 version: "3.7"
 services:
-  mongo:
-    image: mongo
+  elasticsearch:
+    image: elasticsearch:8.12.2
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_DATABASE: mdb
-    hostname: mongo
-    container_name: mongo
+      discovery.type: single-node
+    hostname: elasticsearch
+    container_name: elasticsearch
     ports:
-      - "27017:27017"
-    volumes:
-      - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
-  mongo-express:
-    image: mongo-express
-    depends_on:
-      - mongo
-    hostname: mongo-express
-    container_name: mongo-express
-    links:
-      - mongo:mongo
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
-  test:
-    image: mongodb/mongodb-community-server:7.0.3-ubi8
-    environment:
-      - CONN_STR=mongodb://admin:admin@mongo
-    command: '/bin/bash -c "sleep 5; mongosh $$CONN_STR --eval \"show dbs;\""'
-    depends_on:
-      - mongo
-    container_name: test
+      - "9200:9200"
+      - "9300:9300"
   docstore:
-    image: quarkus-nosql-tests/docstore-mongodb:1.0-SNAPSHOT
+    image: quarkus-nosql-tests/docstore-elasticsearch:1.0-SNAPSHOT
     depends_on:
-      - mongo
-      - mongo-express
+      - elasticsearch
     hostname: docstore
     container_name: docstore
     links:
-      - mongo:mongo
-      - mongo-express:mongo-express
+      - elasticsearch:elasticsearch
     ports:
       - "8080:8080"
       - "5005:5005"

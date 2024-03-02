@@ -22,7 +22,7 @@ public class ProductResourceIT
   {
     product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
       BigDecimal.valueOf(549.30));
-    product.setId(100L);
+    product.setId("100L");
   }
 
   @AfterAll

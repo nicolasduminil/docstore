@@ -1,40 +1,40 @@
 package fr.simplex_software.docstore.service.impl;
 
 import co.elastic.clients.elasticsearch.*;
+import co.elastic.clients.elasticsearch._types.*;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
+import co.elastic.clients.elasticsearch.core.*;
+import co.elastic.clients.elasticsearch.core.search.*;
 import fr.simplex_software.docstore.domain.*;
 import fr.simplex_software.docstore.service.*;
+import jakarta.enterprise.context.*;
 import jakarta.inject.*;
-import jakarta.json.*;
-import jakarta.json.bind.*;
 import jakarta.mail.internet.*;
-import org.apache.http.util.*;
-import org.elasticsearch.client.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 
+@ApplicationScoped
 public class CustomerServiceImpl implements CustomerService
 {
-  private static final JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-  private static final Jsonb jsonb = JsonbBuilder.create();
-
   @Inject
-  ElasticsearchClient restClient;
+  ElasticsearchClient client;
 
   @Override
-  public void doIndex(Customer customer) throws IOException
+  public String doIndex(Customer customer) throws IOException
   {
-    Request request = new Request("PUT", "/customers/_doc/" + customer.getId());
-    request.setJsonEntity(jsonb.toString());
-    restClient.performRequest(request);
+    IndexRequest<Customer> request =
+      IndexRequest.of(builder -> builder.index("customers").id(customer.getId()).document(customer));
+    return client.index(request).index();
   }
 
   @Override
   public Customer getCustomer(String id) throws IOException
   {
-    Request request = new Request("GET", "/customers/_doc/" + id);
-    Response response = restClient.performRequest(request);
-    return jsonb.fromJson(EntityUtils.toString(response.getEntity()), Customer.class);
+    GetRequest getRequest = GetRequest.of(builder -> builder.index("customers").id(id));
+    GetResponse<Customer> getResponse = client.get(getRequest, Customer.class);
+    return getResponse.found() ? getResponse.source() : null;
   }
 
   @Override
@@ -52,16 +52,8 @@ public class CustomerServiceImpl implements CustomerService
   @Override
   public List<Customer> searchCustomer(String term, String match) throws IOException
   {
-    Request request = new Request("GET", "/customers/_search");
-    request.setJsonEntity(getJsonQuery(term, match));
-    List<Customer> customers = jsonb.fromJson(EntityUtils.toString(restClient.performRequest(request).getEntity()),
-      new ArrayList<Customer>(){}.getClass().getGenericSuperclass());
-    return customers;
-  }
-
-  private String getJsonQuery(String term, String match)
-  {
-    return jsonObjectBuilder.add("query", jsonObjectBuilder.add("match", jsonObjectBuilder.add(term, match)
-      .build()).build()).toString();
+    return client.search(SearchRequest.of(builder -> builder.index("customers")
+      .query(QueryBuilders.match().field(term).query(FieldValue.of(match)).build()._toQuery())), Customer.class).hits()
+      .hits().stream().map(Hit::source).collect(Collectors.toList());
   }
 }

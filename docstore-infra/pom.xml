@@ -38,6 +38,7 @@
             <configuration>
               <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
               <removeVolumes>true</removeVolumes>
+              <removeOrphans>true</removeOrphans>
             </configuration>
           </execution>
         </executions>

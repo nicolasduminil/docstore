@@ -1,11 +1,25 @@
 package fr.simplex_software.docstore.api;
 
 import fr.simplex_software.docstore.domain.*;
-import fr.simplex_software.docstore.repository.*;
-import io.quarkus.mongodb.rest.data.panache.*;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 
-import java.math.*;
+import java.io.*;
 
-public interface OrderItemResource extends PanacheMongoRepositoryResource<OrderItemRepository, OrderItem, Long>
+public interface OrderItemResource
 {
+  @POST
+  Response createOrderItem (OrderItem orderItem, @Context UriInfo uriInfo) throws IOException;
+  @Path("id")
+  @GET
+  Response findOrderItemById (@QueryParam("id") String id) throws IOException;
+  @Path("product-id")
+  @GET
+  Response findOrderItemByProductId (@QueryParam("productId")String productId);
+  @GET
+  Response findOrderItem (@QueryParam("term")String term, @QueryParam("match")String match) throws IOException;
+  @PUT
+  Response updateOrderItem (OrderItem orderItem);
+  @DELETE
+  Response deleteOrderItem (OrderItem orderItem);
 }

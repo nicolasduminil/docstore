@@ -1,11 +1,10 @@
 package fr.simplex_software.docstore.api.tests;
 
-import com.mongodb.*;
 import fr.simplex_software.docstore.domain.*;
 import io.quarkus.test.junit.*;
 import org.apache.http.*;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.*;
 
 import java.math.*;
 
@@ -22,9 +21,8 @@ public class OrderItemResourceIT
   @BeforeAll
   public static void beforeAll()
   {
-    DBRef dbRef = new DBRef("mdb", "Products", 100);
-    orderItem = new OrderItem(dbRef, BigDecimal.valueOf(549.30), 1);
-    orderItem.setId(1L);
+    orderItem = new OrderItem("", BigDecimal.valueOf(549.30), 1);
+    orderItem.setId("1L");
   }
 
   @AfterAll
@@ -41,7 +39,7 @@ public class OrderItemResourceIT
   {
     product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
       BigDecimal.valueOf(549.30));
-    product.setId(100L);
+    product.setId("100L");
     given()
       .header("Content-type", "application/json")
       .and().body(product)
@@ -103,14 +101,14 @@ public class OrderItemResourceIT
   @Order(45)
   public void testGetOrderItemProductShouldSucceed()
   {
-    DBRef dbRef = given()
+    String productId = given()
       .header("Content-type", "application/json")
       .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getObject("product", DocRef.class);
+      .extract().body().jsonPath().getObject("productId", String.class);
     assertThat (given()
-      .when().pathParam("id", dbRef.getCollectionName()).get("/product/{id}")
+      .when().pathParam("id", productId).get("/product/{id}")
       .then()
       .statusCode(HttpStatus.SC_OK)
       .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 9");

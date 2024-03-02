@@ -21,7 +21,7 @@ public class CustomerResourceIT
   {
     customer = new Customer("John", "Doe", new InternetAddress("john.doe@gmail.com"));
     customer.addAddress(new Address("Gebhard-Gerber-Allee 8", "Kornwestheim", "Germany"));
-    customer.setId(10L);
+    customer.setId("10L");
   }
 
   @Test
