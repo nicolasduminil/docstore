@@ -3,20 +3,55 @@ services:
   elasticsearch:
     image: elasticsearch:8.12.2
     environment:
+      node.name: node1
+      cluster.name: elasticsearch
       discovery.type: single-node
+      bootstrap.memory_lock: "true"
+      xpack.security.enabled: "false"
+      path.repo: /usr/share/elasticsearch/backups
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
     hostname: elasticsearch
     container_name: elasticsearch
     ports:
       - "9200:9200"
       - "9300:9300"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - node1-data:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.2
+    hostname: kibana
+    container_name: kibana
+    environment:
+      - elasticsearch.url=http://elasticsearch:9200
+      - csp.strict=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 5601:5601
+    networks:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch:elasticsearc
   docstore:
     image: quarkus-nosql-tests/docstore-elasticsearch:1.0-SNAPSHOT
     depends_on:
       - elasticsearch
+      - kibana
     hostname: docstore
     container_name: docstore
     links:
       - elasticsearch:elasticsearch
+      - kibana:kibana
     ports:
       - "8080:8080"
       - "5005:5005"
@@ -24,5 +59,9 @@ services:
       JAVA_DEBUG: "true"
       JAVA_APP_DIR: /home/jboss
       JAVA_APP_JAR: quarkus-run.jar
-
+volumes:
+  node1-data:
+    driver: local
+networks:
+  elasticsearch:
 

@@ -19,7 +19,7 @@ public interface CustomerResource
   @APIResponse(responseCode = "500", description = "An internal server error has occurred",
     content = @Content(mediaType = APPLICATION_XML))
   @APIResponseSchema(value = Customer.class, responseDescription = "The new customer has been created", responseCode = "201")
-  Response createCustomer (@Parameter (example = "{\n" +
+  Response createCustomer (@RequestBody (content = @Content (example = "{\n" +
     "  \"id\": 10,\n" +
     "  \"firstName\": \"John\",\n" +
     "  \"lastName\": \"Doe\",\n" +
@@ -43,7 +43,7 @@ public interface CustomerResource
     "      \"country\": \"Germany\"\n" +
     "    }\n" +
     "  ]\n" +
-    "}") Customer customer, @Context UriInfo uriInfo) throws IOException;
+    "}")) Customer customer, @Context UriInfo uriInfo) throws IOException;
   @Path("id")
   @GET
   @Operation(description = "Find a customer by its ID")
