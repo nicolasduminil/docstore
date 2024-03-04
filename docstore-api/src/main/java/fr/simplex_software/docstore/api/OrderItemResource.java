@@ -15,7 +15,7 @@ public interface OrderItemResource
   Response findOrderItemById (@QueryParam("id") String id) throws IOException;
   @Path("product-id")
   @GET
-  Response findOrderItemByProductId (@QueryParam("productId")String productId);
+  Response findOrderItemByProductId (@QueryParam("productId")String productId) throws IOException;
   @GET
   Response findOrderItem (@QueryParam("term")String term, @QueryParam("match")String match) throws IOException;
   @PUT

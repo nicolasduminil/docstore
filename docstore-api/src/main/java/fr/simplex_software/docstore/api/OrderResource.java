@@ -17,10 +17,10 @@ public interface OrderResource
   Response findOrder (@QueryParam("term")String term, @QueryParam("match")String match) throws IOException;
   @Path("address")
   @GET
-  Response findOrderByAddress (@QueryParam("address")Address address);
+  Response findOrderByAddress (@QueryParam("address")Address address) throws IOException;
   @Path("customer-id")
   @GET
-  Response findOrderByCustomerId (@QueryParam("customer-id")String customerId);
+  Response findOrderByCustomerId (@QueryParam("customer-id")String customerId) throws IOException;
   @PUT
   Response updateOrder (Order order);
   @DELETE

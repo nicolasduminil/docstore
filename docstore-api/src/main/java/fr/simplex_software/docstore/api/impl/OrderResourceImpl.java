@@ -10,7 +10,11 @@ import org.jboss.resteasy.spi.*;
 
 import java.io.*;
 
+import static jakarta.ws.rs.core.MediaType.*;
+
 @Path("orders")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class OrderResourceImpl implements OrderResource
 {
   @Inject
@@ -35,13 +39,13 @@ public class OrderResourceImpl implements OrderResource
   }
 
   @Override
-  public Response findOrderByAddress(Address address)
+  public Response findOrderByAddress(Address address) throws IOException
   {
     return Response.ok().entity(orderService.searchOrderByAddress(address)).build();
   }
 
   @Override
-  public Response findOrderByCustomerId(String customerId)
+  public Response findOrderByCustomerId(String customerId) throws IOException
   {
     return Response.ok().entity(orderService.searchOrderByCustomerId(customerId)).build();
   }

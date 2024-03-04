@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class OrderResourceIT
+public class OrderResource
 {
   private static Order order;
 

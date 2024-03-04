@@ -10,7 +10,11 @@ import org.jboss.resteasy.spi.*;
 
 import java.io.*;
 
+import static jakarta.ws.rs.core.MediaType.*;
+
 @Path("products")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class ProductResourceImpl implements ProductResource
 {
   @Inject

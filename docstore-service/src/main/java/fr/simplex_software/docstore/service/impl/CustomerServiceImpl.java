@@ -18,23 +18,21 @@ import java.util.stream.*;
 @ApplicationScoped
 public class CustomerServiceImpl implements CustomerService
 {
+  private static final String INDEX = "customers";
+
   @Inject
   ElasticsearchClient client;
 
   @Override
-  public Customer doIndex(Customer customer) throws IOException
+  public String doIndex(Customer customer) throws IOException
   {
-    IndexRequest<Customer> request =
-      IndexRequest.of(ir -> ir.index("customers").document(customer));
-    IndexResponse indexResponse = client.index(request);
-    customer.setId(indexResponse.id());
-    return customer;
+    return client.index(IndexRequest.of(builder -> builder.index(INDEX).document(customer))).id();
   }
 
   @Override
   public Customer getCustomer(String id) throws IOException
   {
-    GetRequest getRequest = GetRequest.of(gr -> gr.index("customers").id(id));
+    GetRequest getRequest = GetRequest.of(gr -> gr.index(INDEX).id(id));
     GetResponse<Customer> getResponse = client.get(getRequest, Customer.class);
     return getResponse.found() ? getResponse.source() : null;
   }
@@ -52,34 +50,34 @@ public class CustomerServiceImpl implements CustomerService
   }
 
   @Override
-  public List<Customer> searchCustomer(String term, String match) throws IOException
+  public List<Customer> searchCustomer(String field, String value) throws IOException
   {
-    return client.search(SearchRequest.of(sr -> sr.index("customers")
-      .query(QueryBuilders.match().field(term).query(FieldValue.of(match)).build()._toQuery())), Customer.class).hits()
+    return client.search(SearchRequest.of(sr -> sr.index(INDEX)
+      .query(QueryBuilders.match().field(field).query(FieldValue.of(value)).build()._toQuery())), Customer.class).hits()
       .hits().stream().map(Hit::source).collect(Collectors.toList());
   }
 
   @Override
-  public Customer modifyCustomer(Customer customer) throws IOException
+  public void modifyCustomer(Customer customer) throws IOException
   {
-    return client.update(ur -> ur.index("customers").id(customer.getId()).doc(customer), Customer.class).get().source();
+    client.update(ur -> ur.index(INDEX).id(customer.getId()).doc(customer), Customer.class); //.get().source();
   }
 
   @Override
   public void removeCustomerById(String id) throws IOException
   {
-    client.delete(dr -> dr.index("customers").id(id));
+    client.delete(dr -> dr.index(INDEX).id(id));
   }
 
   @Override
-  public void removeCustomer(String term, String match)
+  public void removeCustomer(String field, String value) throws IOException
   {
-
+    client.deleteByQuery(DeleteByQueryRequest.of(dbqr -> dbqr.query(TermQuery.of(tq -> tq.field(field).value(value))._toQuery()).index(INDEX)));
   }
 
   @Override
-  public void removeAllCustomers()
+  public void removeAllCustomers() throws IOException
   {
-    client.deleteByQuery(dq -> dq.index("customers"), Customer.class);
+    client.delete(dr -> dr.index(INDEX));
   }
 }

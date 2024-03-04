@@ -55,6 +55,8 @@ services:
     ports:
       - "8080:8080"
       - "5005:5005"
+    networks:
+      - elasticsearch
     environment:
       JAVA_DEBUG: "true"
       JAVA_APP_DIR: /home/jboss

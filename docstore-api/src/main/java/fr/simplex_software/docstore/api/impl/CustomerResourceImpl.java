@@ -24,7 +24,7 @@ public class CustomerResourceImpl implements CustomerResource
   @Override
   public Response createCustomer(Customer customer, @Context UriInfo uriInfo) throws IOException
   {
-    return Response.created(uriInfo.getAbsolutePathBuilder().path(customerService.doIndex(customer)).build()).build();
+    return Response.accepted(customerService.doIndex(customer)).build();
   }
 
   @Override
@@ -52,14 +52,16 @@ public class CustomerResourceImpl implements CustomerResource
   }
 
   @Override
-  public Response updateCustomer(Customer customer)
+  public Response updateCustomer(Customer customer) throws IOException
   {
-    throw new NotImplementedYetException("### CustomerResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    customerService.modifyCustomer(customer);
+    return Response.noContent().build();
   }
 
   @Override
-  public Response deleteCustomer(Customer customer)
+  public Response deleteCustomer(Customer customer) throws IOException
   {
-    throw new NotImplementedYetException("### CustomerResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    customerService.removeAllCustomers();
+    return Response.noContent().build();
   }
 }

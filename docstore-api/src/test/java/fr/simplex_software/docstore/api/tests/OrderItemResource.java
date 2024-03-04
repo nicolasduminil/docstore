@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class OrderItemResourceIT
+public class OrderItemResource
 {
   private static OrderItem orderItem;
   private static Product product;

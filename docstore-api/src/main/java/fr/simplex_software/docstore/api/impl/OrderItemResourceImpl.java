@@ -10,7 +10,11 @@ import org.jboss.resteasy.spi.*;
 
 import java.io.*;
 
+import static jakarta.ws.rs.core.MediaType.*;
+
 @Path("order-items")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class OrderItemResourceImpl implements OrderItemResource
 {
   @Inject
@@ -29,7 +33,7 @@ public class OrderItemResourceImpl implements OrderItemResource
   }
 
   @Override
-  public Response findOrderItemByProductId(String productId)
+  public Response findOrderItemByProductId(String productId) throws IOException
   {
     return Response.ok().entity(orderItemService.searchOrderItemByProductId(productId)).build();
   }

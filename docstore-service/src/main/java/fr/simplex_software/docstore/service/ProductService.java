@@ -12,4 +12,8 @@ public interface ProductService
   List<Product> searchProductByAddress (Address address);
   List<Product> searchProductByName (String name);
   List<Product> searchProduct (String term, String match) throws IOException;
+  void modifyProduct (Product product) throws IOException;
+  void removeProductById (String id) throws IOException;
+  void removeProduct (String term, String match) throws IOException;
+  void removeAllProduct() throws IOException;
 }

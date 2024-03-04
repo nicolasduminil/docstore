@@ -19,31 +19,7 @@ public interface CustomerResource
   @APIResponse(responseCode = "500", description = "An internal server error has occurred",
     content = @Content(mediaType = APPLICATION_XML))
   @APIResponseSchema(value = Customer.class, responseDescription = "The new customer has been created", responseCode = "201")
-  Response createCustomer (@RequestBody (content = @Content (example = "{\n" +
-    "  \"id\": 10,\n" +
-    "  \"firstName\": \"John\",\n" +
-    "  \"lastName\": \"Doe\",\n" +
-    "  \"email\": {\n" +
-    "    \"address\": \"john.doe@gmail.com\",\n" +
-    "    \"personal\": \"John Doe\",\n" +
-    "    \"encodedPersonal\": \"John Doe\",\n" +
-    "    \"type\": \"personal\",\n" +
-    "    \"simple\": true,\n" +
-    "    \"group\": true\n" +
-    "  },\n" +
-    "  \"addresses\": [\n" +
-    "    {\n" +
-    "      \"street\": \"75, rue Véronique Coulon\",\n" +
-    "      \"city\": \"Coste\",\n" +
-    "      \"country\": \"France\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"street\": \"Wulfweg 827\",\n" +
-    "      \"city\": \"Bautzen\",\n" +
-    "      \"country\": \"Germany\"\n" +
-    "    }\n" +
-    "  ]\n" +
-    "}")) Customer customer, @Context UriInfo uriInfo) throws IOException;
+  Response createCustomer (Customer customer, @Context UriInfo uriInfo) throws IOException;
   @Path("id")
   @GET
   @Operation(description = "Find a customer by its ID")
@@ -76,10 +52,10 @@ public interface CustomerResource
     content = @Content(mediaType = APPLICATION_JSON))
   @APIResponseSchema(value = Customer.class, responseDescription = "The updated customer", responseCode = "200")
   @PUT
-  Response updateCustomer (Customer customer);
+  Response updateCustomer (Customer customer) throws IOException;
   @DELETE
   @Operation(description = "Delete a customer")
   @APIResponse(responseCode = "404", description = "No such customer",
     content = @Content(mediaType = APPLICATION_JSON))
-  Response deleteCustomer (Customer customer);
+  Response deleteCustomer (Customer customer) throws IOException;
 }

@@ -17,6 +17,8 @@ import java.util.stream.*;
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService
 {
+  private static final String INDEX = "products";
+
   @Inject
   ElasticsearchClient client;
 
@@ -24,7 +26,7 @@ public class ProductServiceImpl implements ProductService
   public String doIndex(Product product) throws IOException
   {
     IndexRequest<Product> request =
-      IndexRequest.of(builder -> builder.index("products").id(product.getId()).document(product));
+      IndexRequest.of(builder -> builder.index(INDEX).id(product.getId()).document(product));
     return client.index(request).index();
   }
 
@@ -32,7 +34,7 @@ public class ProductServiceImpl implements ProductService
   public Product getProduct(String id) throws IOException
   {
     GetResponse<Product> getResponse =
-      client.get(GetRequest.of(builder -> builder.index("products").id(id)), Product.class);
+      client.get(GetRequest.of(builder -> builder.index(INDEX).id(id)), Product.class);
     return getResponse.found() ? getResponse.source() : null;
   }
 
@@ -51,8 +53,32 @@ public class ProductServiceImpl implements ProductService
   @Override
   public List<Product> searchProduct(String term, String match) throws IOException
   {
-    return client.search(SearchRequest.of(builder -> builder.index("products")
+    return client.search(SearchRequest.of(builder -> builder.index(INDEX)
       .query(QueryBuilders.match().field(term).query(FieldValue.of(match)).build()._toQuery())), Product.class).hits()
       .hits().stream().map(Hit::source).collect(Collectors.toList());
+  }
+
+  @Override
+  public void modifyProduct(Product product) throws IOException
+  {
+    client.update(ur -> ur.index(INDEX).id(product.getId()).doc(product), Order.class);
+  }
+
+  @Override
+  public void removeProductById(String id) throws IOException
+  {
+    client.delete(dr -> dr.index(INDEX).id(id));
+  }
+
+  @Override
+  public void removeProduct(String field, String value) throws IOException
+  {
+    client.deleteByQuery(DeleteByQueryRequest.of(dbqr -> dbqr.query(TermQuery.of(tq -> tq.field(field).value(value))._toQuery()).index(INDEX)));
+  }
+
+  @Override
+  public void removeAllProduct() throws IOException
+  {
+    client.delete(dr -> dr.index(INDEX));
   }
 }
