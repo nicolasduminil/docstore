@@ -22,7 +22,7 @@ public interface OrderResource
   @GET
   Response findOrderByCustomerId (@QueryParam("customer-id")String customerId) throws IOException;
   @PUT
-  Response updateOrder (Order order);
+  Response updateOrder (Order order) throws IOException;
   @DELETE
-  Response deleteOrder (OrderItem order);
+  Response deleteOrderById (String id) throws IOException;
 }

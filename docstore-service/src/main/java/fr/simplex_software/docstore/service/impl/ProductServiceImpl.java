@@ -25,16 +25,14 @@ public class ProductServiceImpl implements ProductService
   @Override
   public String doIndex(Product product) throws IOException
   {
-    IndexRequest<Product> request =
-      IndexRequest.of(builder -> builder.index(INDEX).id(product.getId()).document(product));
-    return client.index(request).index();
+    return client.index(IndexRequest.of(ir -> ir.index(INDEX).document(product))).id();
   }
 
   @Override
   public Product getProduct(String id) throws IOException
   {
-    GetResponse<Product> getResponse =
-      client.get(GetRequest.of(builder -> builder.index(INDEX).id(id)), Product.class);
+     GetResponse<Product> getResponse =
+      client.get(GetRequest.of(gr -> gr.index(INDEX).id(id)), Product.class);
     return getResponse.found() ? getResponse.source() : null;
   }
 
@@ -53,7 +51,7 @@ public class ProductServiceImpl implements ProductService
   @Override
   public List<Product> searchProduct(String term, String match) throws IOException
   {
-    return client.search(SearchRequest.of(builder -> builder.index(INDEX)
+    return client.search(SearchRequest.of(sr -> sr.index(INDEX)
       .query(QueryBuilders.match().field(term).query(FieldValue.of(match)).build()._toQuery())), Product.class).hits()
       .hits().stream().map(Hit::source).collect(Collectors.toList());
   }
@@ -61,7 +59,7 @@ public class ProductServiceImpl implements ProductService
   @Override
   public void modifyProduct(Product product) throws IOException
   {
-    client.update(ur -> ur.index(INDEX).id(product.getId()).doc(product), Order.class);
+    client.update(ur -> ur.index(INDEX).id(product.getId()).doc(product), Product.class);
   }
 
   @Override

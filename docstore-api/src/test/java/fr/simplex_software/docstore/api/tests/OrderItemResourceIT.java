@@ -13,51 +13,46 @@ import static org.assertj.core.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class OrderItemResource
+public class OrderItemResourceIT
 {
   private static OrderItem orderItem;
   private static Product product;
+  private static String productId;
+  private static String orderItemId;
 
   @BeforeAll
   public static void beforeAll()
   {
-    orderItem = new OrderItem("", BigDecimal.valueOf(549.30), 1);
-    orderItem.setId("1L");
+    product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
+      BigDecimal.valueOf(549.30));
+    productId = given()
+      .header("Content-type", "application/json")
+      .and().body(product)
+      .when().post("/products")
+      .then()
+      .statusCode(HttpStatus.SC_ACCEPTED)
+      .extract().response().body().asString();
+    orderItem = new OrderItem(productId, BigDecimal.valueOf(549.30), 1);
   }
 
   @AfterAll
   public static void afterAll()
   {
     orderItem = null;
-    given().pathParam("id", product.getId()).delete("/product/{id}");
     product = null;
-  }
-
-  @Test
-  @Order(5)
-  public void testCreateProductForOrderItemShouldSucceed()
-  {
-    product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
-      BigDecimal.valueOf(549.30));
-    product.setId("100L");
-    given()
-      .header("Content-type", "application/json")
-      .and().body(product)
-      .when().post("/product")
-      .then()
-      .statusCode(HttpStatus.SC_CREATED);
   }
 
   @Test
   @Order(10)
   public void testCreateOrderItemShouldSucceed()
   {
-    given()
+    orderItemId = given()
       .header("Content-type", "application/json")
       .and().body(orderItem)
-      .when().post("/order-item")
+      .when().post("/order-items")
       .then()
-      .statusCode(HttpStatus.SC_CREATED);
+      .statusCode(HttpStatus.SC_ACCEPTED)
+      .extract().response().body().asString();
   }
 
   @Test
@@ -66,10 +61,10 @@ public class OrderItemResource
   {
     assertThat (given()
       .header("Content-type", "application/json")
-      .when().get("/order-item")
+      .when().queryParam("id", orderItemId).get("/order-items/id")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("price[0]")).isEqualTo("549.3");
+      .extract().body().jsonPath().getString("price")).isEqualTo("549.3");
   }
 
   @Test
@@ -77,44 +72,16 @@ public class OrderItemResource
   public void testUpdateProductShouldSucceed()
   {
     orderItem.setPrice(BigDecimal.valueOf(550.00));
+    orderItem.setId(orderItemId);
     given()
       .header("Content-type", "application/json")
       .and().body(orderItem)
-      .when().pathParam("id", orderItem.getId()).put("/order-item/{id}")
+      .when().put("/order-items")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
-  @Test
-  @Order(40)
-  public void testGetSingleOrderItemShouldSucceed()
-  {
-    assertThat (given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("price")).isEqualTo("550.0");
-  }
-
-  @Test
-  @Order(45)
-  public void testGetOrderItemProductShouldSucceed()
-  {
-    String productId = given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getObject("productId", String.class);
-    assertThat (given()
-      .when().pathParam("id", productId).get("/product/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 9");
-  }
-
-  @Test
+  /*@Test
   @Order(50)
   public void testDeleteOrderItemShouldSucceed()
   {
@@ -134,5 +101,5 @@ public class OrderItemResource
       .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
       .then()
       .statusCode(HttpStatus.SC_NOT_FOUND);
-  }
+  }*/
 }

@@ -26,14 +26,13 @@ public class CustomerServiceImpl implements CustomerService
   @Override
   public String doIndex(Customer customer) throws IOException
   {
-    return client.index(IndexRequest.of(builder -> builder.index(INDEX).document(customer))).id();
+    return client.index(IndexRequest.of(ir -> ir.index(INDEX).document(customer))).id();
   }
 
   @Override
   public Customer getCustomer(String id) throws IOException
   {
-    GetRequest getRequest = GetRequest.of(gr -> gr.index(INDEX).id(id));
-    GetResponse<Customer> getResponse = client.get(getRequest, Customer.class);
+    GetResponse<Customer> getResponse = client.get(GetRequest.of(gr -> gr.index(INDEX).id(id)), Customer.class);
     return getResponse.found() ? getResponse.source() : null;
   }
 
@@ -60,13 +59,13 @@ public class CustomerServiceImpl implements CustomerService
   @Override
   public void modifyCustomer(Customer customer) throws IOException
   {
-    client.update(ur -> ur.index(INDEX).id(customer.getId()).doc(customer), Customer.class); //.get().source();
+    client.update(ur -> ur.index(INDEX).id(customer.getId()).doc(customer), Customer.class);
   }
 
   @Override
   public void removeCustomerById(String id) throws IOException
   {
-    client.delete(dr -> dr.index(INDEX).id(id));
+    client.delete(DeleteRequest.of(dr -> dr.index(INDEX).id(id)));
   }
 
   @Override

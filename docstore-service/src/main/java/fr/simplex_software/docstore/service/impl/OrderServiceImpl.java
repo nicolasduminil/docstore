@@ -25,9 +25,7 @@ public class OrderServiceImpl implements OrderService
   @Override
   public String doIndex(Order order) throws IOException
   {
-    IndexRequest<Order> request =
-      IndexRequest.of(builder -> builder.index(INDEX).id(order.getId()).document(order));
-    return client.index(request).index();
+    return client.index(IndexRequest.of(ir -> ir.index(INDEX).document(order))).id();
   }
 
   @Override

@@ -19,7 +19,7 @@ public interface OrderItemResource
   @GET
   Response findOrderItem (@QueryParam("term")String term, @QueryParam("match")String match) throws IOException;
   @PUT
-  Response updateOrderItem (OrderItem orderItem);
+  Response updateOrderItem (OrderItem orderItem) throws IOException;
   @DELETE
-  Response deleteOrderItem (OrderItem orderItem);
+  Response deleteOrderItemById (String id) throws IOException;
 }

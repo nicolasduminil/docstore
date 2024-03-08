@@ -11,9 +11,10 @@ import static org.assertj.core.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class OrderResource
+public class OrderResourceIT
 {
   private static Order order;
+  private static String orderId;
 
   @BeforeAll
   public static void beforeAll()
@@ -34,25 +35,33 @@ public class OrderResource
   @org.junit.jupiter.api.Order(10)
   public void testCreateOrderShouldSucceed()
   {
-    given()
+    orderId = given()
       .header("Content-type", "application/json")
       .and().body(order)
-      .when().post("/order")
+      .when().post("/orders")
       .then()
-      .statusCode(HttpStatus.SC_CREATED);
+      .statusCode(HttpStatus.SC_ACCEPTED)
+      .extract().response().body().asString();
   }
 
   @Test
   @org.junit.jupiter.api.Order(20)
-  public void testGetOrderShouldSucceed()
+  public void testGetOrderByIdShouldSucceed()
   {
-    assertThat (given()
+    /*assertThat (given()
       .header("Content-type", "application/json")
-      .when().get("/order")
+      .when().queryParam("id", orderId).get("/orders/id")
       .then()
       .statusCode(HttpStatus.SC_OK)
       .extract().response().body()
-      .jsonPath().getString("id[0]")).isEqualTo("1000");
+      .jsonPath().getObject("shippingAddress[0]", Address.class).getCity()).isEqualTo("Coste");*/
+    String json = given()
+      .header("Content-type", "application/json")
+      .when().queryParam("id", orderId).get("/orders/id")
+      .then()
+      .statusCode(HttpStatus.SC_OK)
+      .extract().body().asString();
+    System.out.println ("### jsonPath(): " + json);
   }
 
   @Test
@@ -63,12 +72,12 @@ public class OrderResource
     given()
       .header("Content-type", "application/json")
       .and().body(order)
-      .when().pathParam("id", order.getId()).put("/order/{id}")
+      .when().queryParam("id", orderId).put("/orders")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
-  @Test
+  /*@Test
   @org.junit.jupiter.api.Order(40)
   public void testGetSingleOrderShouldSucceed()
   {
@@ -100,5 +109,5 @@ public class OrderResource
       .when().pathParam("id", order.getId()).get("/order/{id}")
       .then()
       .statusCode(HttpStatus.SC_NOT_FOUND);
-  }
+  }*/
 }

@@ -23,7 +23,7 @@ public class OrderResourceImpl implements OrderResource
   @Override
   public Response createOrder(Order order, UriInfo uriInfo) throws IOException
   {
-    return Response.created(uriInfo.getAbsolutePathBuilder().path(orderService.doIndex(order)).build()).build();
+    return Response.accepted(orderService.doIndex(order)).build();
   }
 
   @Override
@@ -51,14 +51,16 @@ public class OrderResourceImpl implements OrderResource
   }
 
   @Override
-  public Response updateOrder(Order order)
+  public Response updateOrder(Order order) throws IOException
   {
-    throw new NotImplementedYetException("### OrderResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    orderService.modifyOrder(order);
+    return Response.noContent().build();
   }
 
   @Override
-  public Response deleteOrder(OrderItem order)
+  public Response deleteOrderById(String id) throws IOException
   {
-    throw new NotImplementedYetException("### OrderResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    orderService.removeOrderById(id);
+    return Response.noContent().build();
   }
 }

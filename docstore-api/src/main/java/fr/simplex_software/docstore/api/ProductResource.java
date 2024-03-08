@@ -22,6 +22,7 @@ public interface ProductResource
   @GET
   Response findProductByName (@QueryParam("name")String name);
   @PUT
-  Response updateOrder (Order order);
+  Response updateProduct (Product product) throws IOException;
   @DELETE
-  Response deleteOrder (OrderItem order);}
+  Response deleteProductById (String id) throws IOException;
+}

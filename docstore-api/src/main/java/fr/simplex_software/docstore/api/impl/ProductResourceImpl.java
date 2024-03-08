@@ -23,7 +23,7 @@ public class ProductResourceImpl implements ProductResource
   @Override
   public Response createProduct(Product product, UriInfo uriInfo) throws IOException
   {
-    return Response.created(uriInfo.getAbsolutePathBuilder().path(productService.doIndex(product)).build()).build();
+    return Response.accepted(productService.doIndex(product)).build();
   }
 
   @Override
@@ -51,14 +51,16 @@ public class ProductResourceImpl implements ProductResource
   }
 
   @Override
-  public Response updateOrder(Order order)
+  public Response updateProduct(Product product) throws IOException
   {
-    throw new NotImplementedYetException("### ProductResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    productService.modifyProduct(product);
+    return Response.noContent().build();
   }
 
   @Override
-  public Response deleteOrder(OrderItem order)
+  public Response deleteProductById(String id) throws IOException
   {
-    throw new NotImplementedYetException("### ProductResourceImpl.updateCustomer(): To be implemented by reader as an exercise");
+    productService.removeProductById(id);
+    return Response.noContent().build();
   }
 }

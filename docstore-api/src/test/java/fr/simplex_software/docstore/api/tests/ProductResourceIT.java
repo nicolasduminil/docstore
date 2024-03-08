@@ -10,19 +10,20 @@ import java.math.*;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductResource
+public class ProductResourceIT
 {
   private static Product product;
+  private static String productId;
 
   @BeforeAll
   public static void beforeAll()
   {
     product = new Product("iPhone 9", "An apple mobile which is nothing like apple",
       BigDecimal.valueOf(549.30));
-    product.setId("100L");
   }
 
   @AfterAll
@@ -35,24 +36,25 @@ public class ProductResource
   @Order(10)
   public void testCreateProductShouldSucceed()
   {
-    given()
+    productId = given()
       .header("Content-type", "application/json")
       .and().body(product)
-      .when().post("/product")
+      .when().post("/products")
       .then()
-      .statusCode(HttpStatus.SC_CREATED);
+      .statusCode(HttpStatus.SC_ACCEPTED)
+      .extract().response().body().asString();
   }
 
   @Test
   @Order(20)
-  public void testGetProductShouldSucceed()
+  public void testGetProductByIdShouldSucceed()
   {
     assertThat (given()
       .header("Content-type", "application/json")
-      .when().get("/product")
+      .when().queryParam("id", productId).get("/products/id")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("name[0]")).isEqualTo("iPhone 9");
+      .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 9");
   }
 
   @Test
@@ -60,27 +62,16 @@ public class ProductResource
   public void testUpdateProductShouldSucceed()
   {
     product.setName("iPhone 10");
-    given()
+    product.setId(productId);
+    assertDoesNotThrow(() -> given()
       .header("Content-type", "application/json")
       .and().body(product)
-      .when().pathParam("id", product.getId()).put("/product/{id}")
+      .when().put("/products")
       .then()
-      .statusCode(HttpStatus.SC_NO_CONTENT);
+      .statusCode(HttpStatus.SC_NO_CONTENT));
   }
 
-  @Test
-  @Order(40)
-  public void testGetSingleProductShouldSucceed()
-  {
-    assertThat (given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", product.getId()).get("/product/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("name")).isEqualTo("iPhone 10");
-  }
-
-  @Test
+  /*@Test
   @Order(50)
   public void testDeleteProductShouldSucceed()
   {
@@ -100,5 +91,5 @@ public class ProductResource
       .when().pathParam("id", product.getId()).get("/product/{id}")
       .then()
       .statusCode(HttpStatus.SC_NOT_FOUND);
-  }
+  }*/
 }

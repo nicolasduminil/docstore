@@ -59,9 +59,9 @@ public class CustomerResourceImpl implements CustomerResource
   }
 
   @Override
-  public Response deleteCustomer(Customer customer) throws IOException
+  public Response deleteCustomerById(String id) throws IOException
   {
-    customerService.removeAllCustomers();
+    customerService.removeCustomerById(id);
     return Response.noContent().build();
   }
 }

@@ -57,5 +57,5 @@ public interface CustomerResource
   @Operation(description = "Delete a customer")
   @APIResponse(responseCode = "404", description = "No such customer",
     content = @Content(mediaType = APPLICATION_JSON))
-  Response deleteCustomer (Customer customer) throws IOException;
+  Response deleteCustomerById (String id) throws IOException;
 }
