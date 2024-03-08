@@ -21,5 +21,5 @@ public interface OrderItemResource
   @PUT
   Response updateOrderItem (OrderItem orderItem) throws IOException;
   @DELETE
-  Response deleteOrderItemById (String id) throws IOException;
+  Response deleteOrderItemById (@QueryParam("id")String id) throws IOException;
 }

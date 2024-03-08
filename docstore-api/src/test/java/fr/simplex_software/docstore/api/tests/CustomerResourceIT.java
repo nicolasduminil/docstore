@@ -66,25 +66,14 @@ public class CustomerResourceIT
       .statusCode(HttpStatus.SC_NO_CONTENT));
   }
 
-  /*@Test
+  @Test
   @Order(50)
   public void testDeleteCustomerByIdShouldSucceed()
   {
-    assertDoesNotThrow (() -> given().log().all()
+    assertDoesNotThrow (() -> given()
       .header("Content-type", "application/json")
-      .when().queryParam("id", customer.getId()).delete("/customers")
+      .when().queryParam("id", customerId).delete("/customers")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT));
   }
-
-  @Test
-  @Order(60)
-  public void testGetCustomerByIdShouldFail()
-  {
-    given()
-      .header("Content-type", "application/json")
-      .when().queryParam("id", customer.getId()).get("/customers/id")
-      .then()
-      .statusCode(HttpStatus.SC_NOT_FOUND);
-  }*/
 }

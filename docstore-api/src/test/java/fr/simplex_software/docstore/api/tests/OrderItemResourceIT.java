@@ -81,25 +81,14 @@ public class OrderItemResourceIT
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
-  /*@Test
+  @Test
   @Order(50)
   public void testDeleteOrderItemShouldSucceed()
   {
     given()
       .header("Content-type", "application/json")
-      .when().pathParam("id", orderItem.getId()).delete("/order-item/{id}")
+      .when().queryParam("id", orderItemId).delete("/order-items")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
-
-  @Test
-  @Order(60)
-  public void testGetSingleOrderItemShouldFail()
-  {
-    given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", orderItem.getId()).get("/order-item/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_NOT_FOUND);
-  }*/
 }

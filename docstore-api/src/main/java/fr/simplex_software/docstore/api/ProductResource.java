@@ -24,5 +24,5 @@ public interface ProductResource
   @PUT
   Response updateProduct (Product product) throws IOException;
   @DELETE
-  Response deleteProductById (String id) throws IOException;
+  Response deleteProductById (@QueryParam("id")String id) throws IOException;
 }

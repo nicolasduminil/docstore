@@ -71,25 +71,14 @@ public class ProductResourceIT
       .statusCode(HttpStatus.SC_NO_CONTENT));
   }
 
-  /*@Test
+  @Test
   @Order(50)
   public void testDeleteProductShouldSucceed()
   {
     given()
       .header("Content-type", "application/json")
-      .when().pathParam("id", product.getId()).delete("/product/{id}")
+      .when().queryParam("id", product.getId()).delete("/products")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
-
-  @Test
-  @Order(60)
-  public void testGetSingleProductShouldFail()
-  {
-    given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", product.getId()).get("/product/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_NOT_FOUND);
-  }*/
 }

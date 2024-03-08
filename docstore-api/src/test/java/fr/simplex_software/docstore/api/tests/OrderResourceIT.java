@@ -22,7 +22,6 @@ public class OrderResourceIT
     order = new Order ("",
       new Address ("75, rue Véronique Coulon", "Coste", "France"),
       new Address ("Wulfweg 827", "Bautzen", "Germany"));
-    order.setId("1000l");
   }
 
   @AfterAll
@@ -45,30 +44,24 @@ public class OrderResourceIT
   }
 
   @Test
-  @org.junit.jupiter.api.Order(20)
+  @org.junit.jupiter.api.Order(30)
   public void testGetOrderByIdShouldSucceed()
   {
-    /*assertThat (given()
+    assertThat (given()
       .header("Content-type", "application/json")
       .when().queryParam("id", orderId).get("/orders/id")
       .then()
       .statusCode(HttpStatus.SC_OK)
       .extract().response().body()
-      .jsonPath().getObject("shippingAddress[0]", Address.class).getCity()).isEqualTo("Coste");*/
-    String json = given()
-      .header("Content-type", "application/json")
-      .when().queryParam("id", orderId).get("/orders/id")
-      .then()
-      .statusCode(HttpStatus.SC_OK)
-      .extract().body().asString();
-    System.out.println ("### jsonPath(): " + json);
+      .jsonPath().getString("id")).isEqualTo(orderId);
   }
 
   @Test
-  @org.junit.jupiter.api.Order(30)
+  @org.junit.jupiter.api.Order(20)
   public void testUpdateOrderShouldSucceed()
   {
     order.setShippingAddress(new Address ("77, rue Véronique Coulon", "Coste", "France"));
+    order.setId(orderId);
     given()
       .header("Content-type", "application/json")
       .and().body(order)
@@ -77,16 +70,16 @@ public class OrderResourceIT
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
-  /*@Test
+  @Test
   @org.junit.jupiter.api.Order(40)
   public void testGetSingleOrderShouldSucceed()
   {
     assertThat (given()
       .header("Content-type", "application/json")
-      .when().pathParam("id", order.getId()).get("/order/{id}")
+      .when().queryParam("id", orderId).get("/orders/id")
       .then()
       .statusCode(HttpStatus.SC_OK)
-      .extract().body().jsonPath().getString("id")).isEqualTo("1000");
+      .extract().body().jsonPath().getString("id")).isEqualTo(orderId);
   }
 
   @Test
@@ -95,19 +88,8 @@ public class OrderResourceIT
   {
     given()
       .header("Content-type", "application/json")
-      .when().pathParam("id", order.getId()).delete("/order/{id}")
+      .when().queryParam("id", order.getId()).delete("/orders")
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
-
-  @Test
-  @org.junit.jupiter.api.Order(60)
-  public void testGetSingleOrderItemShouldFail()
-  {
-    given()
-      .header("Content-type", "application/json")
-      .when().pathParam("id", order.getId()).get("/order/{id}")
-      .then()
-      .statusCode(HttpStatus.SC_NOT_FOUND);
-  }*/
 }
