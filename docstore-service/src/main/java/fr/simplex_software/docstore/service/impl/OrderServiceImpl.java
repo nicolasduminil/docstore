@@ -25,6 +25,9 @@ public class OrderServiceImpl implements OrderService
   @Override
   public String doIndex(Order order) throws IOException
   {
+    /*client.indices().create(cr -> cr.index(INDEX)
+      .mappings(mp -> mp.properties("id",pr -> pr.keyword(k -> k))
+        .properties("customerId",pr -> pr.join(j -> j.relations("customers",List.of("answer"))))));*/
     return client.index(IndexRequest.of(ir -> ir.index(INDEX).document(order))).id();
   }
 

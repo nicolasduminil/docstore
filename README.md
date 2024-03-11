@@ -1,27 +1,18 @@
-# CRUDing NoSQL Data with Quarkus: Part One - MongoDB
-MongoDB is one of the most reliable and robust document oriented NoSQL database. It allows developers to provide feature-rich
-applications and services, with various modern built-in functionalities, like machine learning, streaming, full-text search, etc.
-While not a classical relational database, MongoDB is nevertheless used by a wide range of different business sectors 
-and its use cases cover all kinds of architecture scenarios and data types. 
+# CRUDing NoSQL Data with Quarkus: Part Two - Elasticsearch
+In the [1st part](https://dzone.com/articles/cruding-nosql-data-with-quarkus-part-one-mongodb) of this short series, we 
+have looked at MongoDB, one of the most reliable and robust document oriented NoSQL database. In this 2nd part we'll 
+examine another quite unavoidable NoSQL database: Elasticsearch.
 
-Document oriented databases are inherently different from the traditional relational ones, where data are stored in tables
-and a single entity might be spread across several such tables. In contrast, document databases store data in separate 
-unrelated *collections*, which eliminates the intrinsic heaviness of the relational model. However, given that real world's 
-domain models are never so simplistic to consist in unrelated separate entities, document databases, including MongoDB, 
-provide several ways to define multi-collection connections, similar to the classical databases relationships, but much 
-lighter, more economic and more efficient. 
+More than just a popular and powerful open source distributed NoSQL database, Elasticsearch is, first of all, a search 
+and analytics engine. It is built on the top of Apache Lucene, the most famous search engine Java library, and is able 
+to perform real-time search and analysis operations on structured and unstructured data. It is designed to handle 
+efficiently large amount of data.
 
-Quarkus, the "supersonic and subatomic" Java stack, is the new kid on the block that the most trendy and influential 
-developers are desperately grabbing and fighting over. Its modern cloud-native facilities, as well as its contrivance, 
-compliant with the best of the breeds standard libraries, together with its ability to build native executables, are seducing since
-a couple of years Java developers, architects, engineers and software designers.
-
-Here we cannot go, of course, into further details of neither [MongoDB](https://www.mongodb.com/) or 
-[Quarkus](https://quarkus.io/) and the reader interested to learn more is invited to check the documentation on the 
-official websites. What we are trying to achieve here is to implement a relatively complex use case consisting in 
-CRUDing a *customer-order-product* domain model, using Quarkus and its MongoDB extension. And in an attempt to provide
-a real-world inspired solution, we're trying to avoid simplistic and caricatural examples, based on a zero-connections 
-single entity model,like there are dozens nowadays.
+Once again, we need to disclaim that this short post is by no means an Elasticsearch tutorial and, accordingly,the 
+inpatient reader is strongly advised to extensively use the official documentation, as well as the excellent book 
+"Elasticsearch in Action" by Madhusudhan Konda (Manning 2023), in order to learn more about the product's architecture
+and operations. Here we're just reimplement the same use case as previously, but using this time Elasticsearch insted of 
+MongoDB.
 
 So, here we go !
 
@@ -30,14 +21,82 @@ The diagram below shows our *customer-order-product* domain model:
 
 ![The Domain Model](docstore-domain/docstore-model.png "The domain model")
 
-As you can see, the central document of the model is `Order`, stored in a dedicated collection named `Orders`. An `Order`
-is an aggregate of `OrderItem` documents, each of which points to its associated `Product`. An `Order` document 
-references also the `Customer` who placed it. In Java, this is implemented as follows:
+This diagram is the same as the one presented in the 1st part. Like MongoDB, Elasticsearch is also a document data store 
+and, as such, it expects documents to be presented in JSON notation. The only difference being the fact that, in order to
+handle its data, Elasticsearch needs to get them indexed. There are several ways that data can be indexed into an Elasticsearch
+data store, for example piping them from a relational database, extracting them from a filesystem, streaming them from
+a real-time source, etc. But whatever the ingestion method might be, it eventually consists in invoking the Elasticsearch
+RESTful API via a dedicated client. There are two categories of such dedicated clients:
+  - REST-based clients like `cUrl`, `Postman`, HTTP modules for Java, JavaScript, NodeJS, etc.
+  - Progtramming language SDKs (*Software Development Kit*). Elasticsearch provides SDKs for all the most used programming languages, including but not limited to Java, Python, etc.
 
-    @MongoEntity(database = "mdb", collection="Customers")
+Indexing a new document with Elasticsearch means creating it using a POST request against a special RESTful API endpoint
+named `_doc`. For example, the following request will create a new Elasticsearch index and store a new customer instance
+in it.
+
+    POST customers/_doc/
+    {
+      "id": 10,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": {
+        "address": "john.doe@gmail.com",
+        "personal": "John Doe",
+        "encodedPersonal": "John Doe",
+        "type": "personal",
+        "simple": true,
+        "group": true
+      },
+      "addresses": [
+        {
+          "street": "75, rue Véronique Coulon",
+          "city": "Coste",
+          "country": "France"
+        },
+        {
+          "street": "Wulfweg 827",
+          "city": "Bautzen",
+          "country": "Germany"
+        }
+      ]
+    }
+
+Running the request above, using `curl` or the Kibana console, as we'll see later, will produce the following result:
+
+    {
+      "_index": "customers",
+      "_id": "ZEQsJI4BbwDzNcFB0ubC",
+      "_version": 1,
+      "result": "created",
+      "_shards": {
+        "total": 2,
+        "successful": 1,
+        "failed": 0
+      },
+      "_seq_no": 1,
+      "_primary_term": 1
+    }
+
+This is the Elasticsearch standard response to a `POST` request. It confirms having created the index named `customers`,
+having a new `customer` document, identified by an automatically generated ID, in this case  `ZEQsJI4BbwDzNcFB0ubC`. Other
+interesting parameters appear here, like `_version` and, especially `_shards`. Without going too much in details here,
+Elasticsearch creates indexes a logical collections of documents. Just like keeping paper documents in a filling cabinet, 
+Elasticsearch keeps documents in an index. Each index is composed of *shards* which are physical instances of Apache 
+Lucene, the engine behind the scene responsible for getting the data in or out the storage. They might be either *primary*,
+storing documents, or *replicas* storing, as the name suggests, copies of primary shards. More on that in the Elasticsearch
+documentation, for know we need to notice that our index, named `customers` is composed of two shards, which one, of 
+course, primary.
+
+A final notice: the `POST` request above doesn't mention the ID value as it is automatically generated. While this is
+probably the most common use case, we could have provided our own ID value, in each case the HTTP request to be used isn't 
+`POST` anymore, but `PUT`.
+
+To come back on our domain model diagram, as you can see, its central document is `Order`, stored in a dedicated 
+collection named `Orders`. An `Order`is an aggregate of `OrderItem` documents, each of which points to its associated 
+`Product`. An `Order` document references also the `Customer` who placed it. In Java, this is implemented as follows:
+
     public class Customer
     {
-      @BsonId
       private Long id;
       private String firstName, lastName;
       private InternetAddress email;
@@ -45,28 +104,22 @@ references also the `Customer` who placed it. In Java, this is implemented as fo
       ...
     }
 
-The code above is showing a fragment of the `Customer` class. This is a POJO (*Plain Old Java Object*) annotated with the
-`@MongoEntity` annotation which parameters define the database name and the collection name. The `@BsonId` annotation is
-used in order to configure the document's unique identifier. While the most common use case is to implement the document's
-identifier as an instance of the `ObjectID` class, this would introduce an useless tidal couplig between the MongoDB 
-specific classes and our document. The other properties are the customer's first and last name, the email address and a 
-set of postal addresses.
+The code above is showing a fragment of the `Customer` class. This is a simple POJO (*Plain Old Java Object*) having
+properties like the customer's ID, first and last name, the email address and a set of postal addresses.
 
 Let's look now at the `Order` document.
 
-    @MongoEntity(database = "mdb", collection="Orders")
     public class Order
     {
-      @BsonId
       private Long id;
-      private DBRef customer;
+      private String customerId;
       private Address shippingAddress;
       private Address billingAddress;
       private Set<DBRef> orderItemSet = new HashSet<>()
       ...
     }
 
-Here we need to create an association between an order and the customer who placed it. We could have embedded the 
+Here you can notice some differences compared to the MongoDB version. we need to create an association between an order and the customer who placed it. We could have embedded the 
 associated `Customer` document in our `Order` document, but this would have been a poor design because it would have 
 redundantly defined twice the same object. We need to use a reference to the associated `Customer` document and we do 
 this using the `DBRef` class. The same thing happens for the set of the associated order items where, instead of embedding
