@@ -366,7 +366,7 @@ In order to test the microservices, proceed as follows:
 
     $ mvn -DskipTests=false failsafe:integration-test
 
-This last command will run all the integration tests which should succeed. You can also use the Swagger UI interface for testing
+This last command will run the 17 provided integration tests which should all succeed. You can also use the Swagger UI interface for testing
 purposes by fireing your prefered browser at http://localhost:8080/q:swagger-ui. Then, in order to test endpoints, you can use the
 payload in the JSON files located in the `src/resources/data` directory of the `docstore-api` project.
 
